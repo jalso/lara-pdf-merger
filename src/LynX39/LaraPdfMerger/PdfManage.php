@@ -75,7 +75,9 @@ class PdfManage
             //add the pages
             if ($filepages == 'all') {
                 for ($i = 1; $i <= $count; $i++) {
-                    $template = $this->_fpdi->importPage($i);
+                    if (!$template = $this->_fpdi->importPage($page)) {
+                        throw new Exception("Could not load page '$page' in PDF '$filename'. Check that the page exists.");
+                    }
                     $size = $this->_fpdi->getTemplateSize($template);
 
                     if ($orientation == null) $fileorientation = $size['w'] < $size['h'] ? 'P' : 'L';
